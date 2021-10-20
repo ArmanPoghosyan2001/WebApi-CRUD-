@@ -21,15 +21,15 @@ namespace Task123.Controllers
         [HttpPost]
         public void Post([FromBody] User user)
         {
-            _context.Add(new User {FirstName = user.FirstName, Age=user.Age });
+            _context.Add(new User { FirstName = user.FirstName, Age = user.Age });
             _context.SaveChanges();
         }
-        
-        [HttpPut]
-        public void Put(int id,[FromBody] User user)
+
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] User user)
         {
             User _user = _context.Users.Find(id);
-            _user.FirstName = user.FirstName;
+            _user.FirstName = user.FirstName ?? _user.FirstName;
             _user.Age = user.Age;
             _context.Users.Update(_user);
             _context.SaveChanges();
