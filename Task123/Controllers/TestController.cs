@@ -19,36 +19,32 @@ namespace Task123.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string name)
+        public void Post([FromBody] User user)
         {
-            User user = new User
-            {
-                FirstName = name,
-                Age = 18
-            };
-            _context.Add(user);
+            _context.Add(new User {FirstName = user.FirstName, Age=user.Age });
             _context.SaveChanges();
         }
         
         [HttpPut]
-        public void Put(int id,[FromBody] string name)
+        public void Put(int id,[FromBody] User user)
         {
-            User user = _context.Users.Find(id);
-            user.FirstName = name;
-            _context.Users.Update(user);
+            User _user = _context.Users.Find(id);
+            _user.FirstName = user.FirstName;
+            _user.Age = user.Age;
+            _context.Users.Update(_user);
             _context.SaveChanges();
         }
 
         [HttpGet]
-        public IEnumerable<string> GetNames()
+        public IEnumerable<User> Get()
         {
-            return _context.Users.Select(x => x.FirstName).ToList();
+            return _context.Users.ToList();
         }
 
         [HttpGet("{id}")]
-        public string GetName(int id)
+        public User Get(int id)
         {
-            return _context.Users.Find(id).FirstName;
+            return _context.Users.Find(id);
         }
 
         [HttpDelete]
